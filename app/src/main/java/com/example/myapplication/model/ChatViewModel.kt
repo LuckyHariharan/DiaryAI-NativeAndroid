@@ -1,8 +1,14 @@
-package com.example.myapplication.model
-
+// ChatViewModel.kt
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-// /app/src/main/java/com/yourpackage/viewmodel/ChatViewModel.kt
 class ChatViewModel : ViewModel() {
-    // Implement the necessary logic for handling user messages and AI responses
+    // Define LiveData or State for chat messages
+    // Example: val chatMessages: LiveData<List<MessageModel>> = MutableLiveData()
+
+    fun sendMessage(message: String) {
+        // Implement logic to send the message to the server and update LiveData
+        // Use viewModelScope.launch for coroutine handling
+    }
 }
