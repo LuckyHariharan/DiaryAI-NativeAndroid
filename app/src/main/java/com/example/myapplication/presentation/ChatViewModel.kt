@@ -1,4 +1,4 @@
-// ChatViewModel.kt
+package com.example.myapplication.presentation// ChatViewModel.kt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.model
+package com.example.myapplication.presentation
 
 // /app/src/main/java/com/yourpackage/model/ChatMessage.kt
 data class ChatMessage(
