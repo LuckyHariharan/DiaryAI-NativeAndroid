@@ -22,11 +22,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class Message(val text: String, val timestamp: String, val isUser: Boolean)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(viewModel: ChatViewModel) {
     var messageText by remember { mutableStateOf("") }
-    val messages = viewModel.getMessages()
+    val messages = viewModel.getMessages().asReversed()
     var showColorDialog by remember { mutableStateOf(false) }
     var backgroundColor by remember { mutableStateOf(Color(0xFF1C1C1C)) } // Default color
 
@@ -54,9 +55,11 @@ fun ChatScreen(viewModel: ChatViewModel) {
                     .fillMaxSize()
                     .padding(bottom = 16.dp)
             ) {
-                MessagesList(
-                    messages = messages,
-                )
+                Box(
+                    modifier = Modifier.weight(1f)
+                ){
+                    MessagesList(messages = messages)
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier
@@ -85,10 +88,12 @@ fun ChatScreen(viewModel: ChatViewModel) {
                         colors = ButtonDefaults.buttonColors(containerColor = White)
                     ) {
                         Text("Send", color = Color.Black)
-                    }                }
+                    }
+                }
             }
         }
     }
+
     // Color selection dialog
     if (showColorDialog) {
         ColorSelectionDialog(onColorSelected = { color ->
@@ -167,11 +172,13 @@ fun getCurrentTimestamp(): String {
     val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
     return sdf.format(Date())
 }
-
 @Composable
 fun MessagesList(messages: List<Message>) {
-    LazyColumn {
-        items(messages) { message ->
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(messages.reversed()) { message ->
             // Differentiate color and layout between user and AI messages
             val (bubbleColor, timestampAlignment, textAlignment) = if (message.isUser) {
                 Triple(White, Alignment.CenterVertically, Alignment.CenterStart)
@@ -182,7 +189,9 @@ fun MessagesList(messages: List<Message>) {
             Row(
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .height(IntrinsicSize.Min),
                 horizontalArrangement = if (message.isUser) Arrangement.Start else Arrangement.End
             ) {
                 if (!message.isUser) {
@@ -199,9 +208,10 @@ fun MessagesList(messages: List<Message>) {
                     modifier = Modifier
                         .weight(1f, fill = false)
                         .wrapContentSize(textAlignment)
+                        .align(Alignment.CenterVertically)
                 ) {
                     Card(
-                        modifier = Modifier.padding(4.dp),
+                        modifier = Modifier.padding(8.dp),
                         shape = MaterialTheme.shapes.medium
                     ) {
                         // Set the background color of the content inside the Card
