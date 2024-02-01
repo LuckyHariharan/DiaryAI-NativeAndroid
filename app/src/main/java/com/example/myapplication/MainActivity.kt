@@ -11,28 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.presentation.DiaryScreen
-import com.example.myapplication.presentation.DiaryViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 //add MVVM kotlin files
 // point MainActivity.kt to the Diary Screen, which uses Diary view model
 class MainActivity : ComponentActivity() {
-    private lateinit var viewModel: DiaryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(DiaryViewModel::class.java)
 
         setContent {
             MyApplicationTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    DiaryScreen(viewModel = viewModel)
-                }
+                Greeting("klj")
             }
         }
     }
