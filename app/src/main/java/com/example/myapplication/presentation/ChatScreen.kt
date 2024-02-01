@@ -49,13 +49,18 @@ fun ChatScreen(viewModel: ChatViewModel) {
                 .padding(innerPadding),
             contentAlignment = Alignment.BottomCenter
         ) {
-            Column {
-                MessagesList(messages)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp)
+            ) {
+                MessagesList(
+                    messages = messages,
+                )
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .padding(bottom = 16.dp), // Increased bottom padding for keyboard
+                        .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
@@ -69,17 +74,18 @@ fun ChatScreen(viewModel: ChatViewModel) {
                             containerColor = Color.White, // Background color of the TextField
                             textColor = Color.Black, // Text color
                             cursorColor = Color.Black // Cursor color
-                        ))
+                        )
+                    )
                     Button(
                         onClick = {
                             viewModel.sendMessage(messageText)
                             messageText = ""
                         },
+                        modifier = Modifier.padding(start = 8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = White)
                     ) {
                         Text("Send", color = Color.Black)
-                    }
-                }
+                    }                }
             }
         }
     }
