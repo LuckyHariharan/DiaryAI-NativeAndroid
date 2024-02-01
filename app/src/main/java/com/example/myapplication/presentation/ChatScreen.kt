@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,12 +25,12 @@ fun ChatScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1C1C1C)), // Dark Charcoal Background
+            .background( Color(R.color.midnight_blue)), // Dark Charcoal Background
         contentAlignment = Alignment.BottomCenter
     ) {
         Column(modifier = Modifier.padding(bottom = 8.dp)) { // Bottom padding for the entire Column
             MessagesList(messages)
-            Spacer(modifier = Modifier.height(8.dp)) // Additional Spacer for more space above keyboard
+            Spacer(modifier = Modifier.height(12.dp)) // Additional Spacer for more space above keyboard
             Row(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
