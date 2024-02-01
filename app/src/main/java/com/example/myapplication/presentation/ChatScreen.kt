@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import java.text.SimpleDateFormat
@@ -54,7 +55,7 @@ fun ChatScreen() {
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = 16.dp), // Increased bottom padding for keyboard
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
@@ -62,8 +63,10 @@ fun ChatScreen() {
                         onValueChange = { messageText = it },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp),
-                        colors = TextFieldDefaults.textFieldColors()
+                            .padding(end = 8.dp)
+                            .height(56.dp), // Increased height for the text field
+                        colors =
+
                     )
                     Button(
                         onClick = {
@@ -76,15 +79,15 @@ fun ChatScreen() {
 
                                 messageText = ""
                             }
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = White)
                     ) {
-                        Text("Send")
+                        Text("Send", color = Color.Black) // Set the text color as needed
                     }
                 }
             }
         }
     }
-
     // Color selection dialog
     if (showColorDialog) {
         ColorSelectionDialog(onColorSelected = { color ->
@@ -92,7 +95,11 @@ fun ChatScreen() {
             showColorDialog = false
         }, onDismissRequest = { showColorDialog = false })
     }
+    // Color selection dialog and MessagesList function remain the same
 }
+
+
+
 @Composable
 fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () -> Unit) {
     val colors = listOf(
@@ -166,7 +173,7 @@ fun MessagesList(messages: List<Message>) {
         items(messages) { message ->
             // Differentiate color and layout between user and AI messages
             val (bubbleColor, timestampAlignment, textAlignment) = if (message.isUser) {
-                Triple(Color.White, Alignment.CenterVertically, Alignment.CenterStart)
+                Triple(White, Alignment.CenterVertically, Alignment.CenterStart)
             } else {
                 Triple(Color(0xFFD3D3D3), Alignment.CenterVertically, Alignment.CenterEnd)
             }
@@ -183,7 +190,7 @@ fun MessagesList(messages: List<Message>) {
                         modifier = Modifier
                             .align(timestampAlignment)
                             .padding(end = 4.dp),
-                        color = Color.White
+                        color = White
                     )
                 }
 
@@ -214,7 +221,7 @@ fun MessagesList(messages: List<Message>) {
                         modifier = Modifier
                             .align(timestampAlignment)
                             .padding(start = 4.dp),
-                        color = Color.White
+                        color = White
                     )
                 }
             }
