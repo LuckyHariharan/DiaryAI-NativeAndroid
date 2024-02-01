@@ -1,14 +1,30 @@
 package com.example.myapplication.presentation// ChatViewModel.kt
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatViewModel : ViewModel() {
-    // Define LiveData or State for chat messages
-    // Example: val chatMessages: LiveData<List<MessageModel>> = MutableLiveData()
+    private val messages = mutableListOf<Message>()
 
-    fun sendMessage(message: String) {
-        // Implement logic to send the message to the server and update LiveData
-        // Use viewModelScope.launch for coroutine handling
+    fun getMessages(): List<Message> {
+        return messages
+    }
+
+    fun sendMessage(messageText: String) {
+        if (messageText.isNotEmpty()) {
+            messages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
+
+            // Simulated AI response
+            val aiResponse = "AI Response to: $messageText"
+            messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+        }
+    }
+
+    private fun getCurrentTimestamp(): String {
+        val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date())
     }
 }
