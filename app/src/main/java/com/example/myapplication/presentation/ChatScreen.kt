@@ -1,6 +1,5 @@
 package com.example.myapplication.presentation
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,19 +24,24 @@ fun ChatScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Blue),
+            .background(Color(0xFF1C1C1C)), // Dark Charcoal Background
         contentAlignment = Alignment.BottomCenter
     ) {
-        Column {
+        Column(modifier = Modifier.padding(bottom = 8.dp)) { // Bottom padding for the entire Column
             MessagesList(messages)
+            Spacer(modifier = Modifier.height(8.dp)) // Additional Spacer for more space above keyboard
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .padding(bottom = 8.dp), // Extra bottom padding for the input row
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextField(
                     value = messageText,
                     onValueChange = { messageText = it },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp), // Horizontal spacing between chatbox and send button
                     colors = TextFieldDefaults.textFieldColors()
                 )
                 Button(
@@ -59,11 +63,35 @@ fun ChatScreen() {
 fun MessagesList(messages: List<Message>) {
     LazyColumn {
         items(messages) { message ->
-            Text(
-                text = "${message.text}\n${message.timestamp}",
-                color = Color.White,
-                modifier = Modifier.padding(8.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth() // Ensure row takes up full width
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f, fill = false) // Using weight with fill = false
+                        .wrapContentSize(Alignment.CenterStart)
+                ) {
+                    Card(
+                        modifier = Modifier.padding(4.dp),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Text(
+                            text = message.text,
+                            modifier = Modifier.padding(8.dp),
+                            color = Color.Black
+                        )
+                    }
+                }
+                Text(
+                    text = message.timestamp,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 4.dp),
+                    color = Color.White
+                )
+            }
         }
     }
 }
