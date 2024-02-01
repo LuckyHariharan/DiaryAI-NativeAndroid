@@ -20,8 +20,7 @@ import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class Message(val text: String, val timestamp: String)
-
+data class Message(val text: String, val timestamp: String, val isUser: Boolean)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen() {
@@ -46,16 +45,16 @@ fun ChatScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(backgroundColor)
-                .padding(innerPadding), // Apply the inner padding given by the Scaffold
+                .padding(innerPadding),
             contentAlignment = Alignment.BottomCenter
         ) {
             Column {
                 MessagesList(messages)
-                Spacer(modifier = Modifier.height(12.dp)) // Additional Spacer for more space above keyboard
+                Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .padding(bottom = 8.dp), // Extra bottom padding for the input row
+                        .padding(bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
@@ -63,13 +62,18 @@ fun ChatScreen() {
                         onValueChange = { messageText = it },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp), // Horizontal spacing between chatbox and send button
+                            .padding(end = 8.dp),
                         colors = TextFieldDefaults.textFieldColors()
                     )
                     Button(
                         onClick = {
                             if (messageText.isNotEmpty()) {
-                                messages.add(Message(messageText, getCurrentTimestamp()))
+                                messages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
+
+                                // Simulated AI response
+                                val aiResponse = "AI Response to: $messageText"
+                                messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+
                                 messageText = ""
                             }
                         }
@@ -89,7 +93,6 @@ fun ChatScreen() {
         }, onDismissRequest = { showColorDialog = false })
     }
 }
-
 @Composable
 fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () -> Unit) {
     val colors = listOf(
@@ -156,18 +159,21 @@ fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () 
 fun MessagesList(messages: List<Message>) {
     LazyColumn {
         items(messages) { message ->
+            val bubbleColor = if (message.isUser) Color.White else Color(0xFFD3D3D3) // Light Gray for AI
             Row(
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillMaxWidth() // Ensure row takes up full width
+                    .fillMaxWidth()
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f, fill = false) // Using weight with fill = false
+                        .weight(1f, fill = false)
                         .wrapContentSize(Alignment.CenterStart)
                 ) {
                     Card(
-                        modifier = Modifier.padding(4.dp),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .background(bubbleColor), // Set background color here
                         shape = MaterialTheme.shapes.medium
                     ) {
                         Text(
