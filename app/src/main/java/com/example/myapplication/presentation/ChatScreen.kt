@@ -24,9 +24,9 @@ import java.util.*
 data class Message(val text: String, val timestamp: String, val isUser: Boolean)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen() {
+fun ChatScreen(viewModel: ChatViewModel) {
     var messageText by remember { mutableStateOf("") }
-    val messages = remember { mutableStateListOf<Message>() }
+    val messages = viewModel.getMessages()
     var showColorDialog by remember { mutableStateOf(false) }
     var backgroundColor by remember { mutableStateOf(Color(0xFF1C1C1C)) } // Default color
 
@@ -72,19 +72,12 @@ fun ChatScreen() {
                         ))
                     Button(
                         onClick = {
-                            if (messageText.isNotEmpty()) {
-                                messages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
-
-                                // Simulated AI response
-                                val aiResponse = "AI Response to: $messageText"
-                                messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
-
-                                messageText = ""
-                            }
+                            viewModel.sendMessage(messageText)
+                            messageText = ""
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = White)
                     ) {
-                        Text("Send", color = Color.Black) // Set the text color as needed
+                        Text("Send", color = Color.Black)
                     }
                 }
             }
