@@ -65,9 +65,11 @@ fun ChatScreen() {
                             .weight(1f)
                             .padding(end = 8.dp)
                             .height(56.dp), // Increased height for the text field
-                        colors =
-
-                    )
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White, // Background color of the TextField
+                            textColor = Color.Black, // Text color
+                            cursorColor = Color.Black // Cursor color
+                        ))
                     Button(
                         onClick = {
                             if (messageText.isNotEmpty()) {
