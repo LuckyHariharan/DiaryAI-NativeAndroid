@@ -99,7 +99,6 @@ fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () 
         Color(0xFF00008B), // Dark Blue
         Color(0xFF0000CD), // Medium Blue
         Color(0xFF0000FF), // Blue
-        Color(0xFF006400), // Dark Green
         Color(0xFF008000), // Green
         Color(0xFF008080), // Teal
         Color(0xFF008B8B), // Dark Cyan
@@ -125,12 +124,12 @@ fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () 
         Color(0xFF708090), // Slate Gray
         Color(0xFF778899), // Light Slate Gray
         Color(0xFF808080), // Gray
-        Color(0xFFA9A9A9), // Dark Gray
-        Color(0xFFC0C0C0), // Silver
-        Color(0xFFD3D3D3), // Light Gray
-        Color(0xFFFFFFFF)  // White
-    )
+        Color(0xFF3D3D3D), // Dark Gray (replacing Silver)
+        Color(0xFF2C2C2C), // Darker Gray
+        Color(0xFF899088), // Gray
+        Color(0xFF6F2D2C), // Darker Gray
 
+    )
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = { Text("Select a Background Color") },
