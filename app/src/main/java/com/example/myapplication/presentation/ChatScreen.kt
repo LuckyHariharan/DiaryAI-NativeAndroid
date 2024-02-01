@@ -155,47 +155,69 @@ fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () 
         confirmButton = { }
     )
 }
+fun getCurrentTimestamp(): String {
+    val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    return sdf.format(Date())
+}
+
 @Composable
 fun MessagesList(messages: List<Message>) {
     LazyColumn {
         items(messages) { message ->
-            val bubbleColor = if (message.isUser) Color.White else Color.LightGray // Light Gray for AI
+            // Differentiate color and layout between user and AI messages
+            val (bubbleColor, timestampAlignment, textAlignment) = if (message.isUser) {
+                Triple(Color.White, Alignment.CenterVertically, Alignment.CenterStart)
+            } else {
+                Triple(Color(0xFFD3D3D3), Alignment.CenterVertically, Alignment.CenterEnd)
+            }
+
             Row(
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                horizontalArrangement = if (message.isUser) Arrangement.Start else Arrangement.End
             ) {
+                if (!message.isUser) {
+                    Text(
+                        text = message.timestamp,
+                        modifier = Modifier
+                            .align(timestampAlignment)
+                            .padding(end = 4.dp),
+                        color = Color.White
+                    )
+                }
+
                 Box(
                     modifier = Modifier
                         .weight(1f, fill = false)
-                        .wrapContentSize(Alignment.CenterStart)
+                        .wrapContentSize(textAlignment)
                 ) {
                     Card(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .background(bubbleColor), // Set background color here
+                        modifier = Modifier.padding(4.dp),
                         shape = MaterialTheme.shapes.medium
                     ) {
-                        Text(
-                            text = message.text,
-                            modifier = Modifier.padding(8.dp),
-                            color = Color.Black
-                        )
+                        // Set the background color of the content inside the Card
+                        Box(modifier = Modifier
+                            .background(bubbleColor)
+                            .padding(8.dp)) {
+                            Text(
+                                text = message.text,
+                                color = Color.Black
+                            )
+                        }
                     }
                 }
-                Text(
-                    text = message.timestamp,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(start = 4.dp),
-                    color = Color.White
-                )
+
+                if (message.isUser) {
+                    Text(
+                        text = message.timestamp,
+                        modifier = Modifier
+                            .align(timestampAlignment)
+                            .padding(start = 4.dp),
+                        color = Color.White
+                    )
+                }
             }
         }
     }
-}
-
-fun getCurrentTimestamp(): String {
-    val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-    return sdf.format(Date())
 }
