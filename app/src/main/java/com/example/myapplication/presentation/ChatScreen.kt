@@ -32,7 +32,7 @@ fun ChatScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Chat Screen") },
+                title = { Text("AI Diary Chat") },
                 actions = {
                     IconButton(onClick = { showColorDialog = true }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Settings")
@@ -159,7 +159,7 @@ fun ColorSelectionDialog(onColorSelected: (Color) -> Unit, onDismissRequest: () 
 fun MessagesList(messages: List<Message>) {
     LazyColumn {
         items(messages) { message ->
-            val bubbleColor = if (message.isUser) Color.White else Color(0xFFD3D3D3) // Light Gray for AI
+            val bubbleColor = if (message.isUser) Color.White else Color.LightGray // Light Gray for AI
             Row(
                 modifier = Modifier
                     .padding(4.dp)
