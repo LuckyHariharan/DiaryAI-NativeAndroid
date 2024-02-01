@@ -1,23 +1,13 @@
 package com.example.myapplication.model
-suspend fun generateResponse() {
-    // Initialize the generative model
+
+import com.google.ai.client.generativeai.GenerativeModel
+
+suspend fun generateResponse(prompt: String): String {
     val generativeModel = GenerativeModel(
-        modelName = "MODEL_NAME", // replace with your model name
-        apiKey = BuildConfig.apiKey
+        modelName = "gemini-pro", // replace with your actual model name
+        apiKey = "AIzaSyDp0Oji17ZQ7dds8ODNFO1DaQ_oJ0ooEoc" // Replace with your actual API key
     )
 
-    // Define the prompt
-    val prompt = "Your prompt here"
-
-    // Generate the content
     val response = generativeModel.generateContent(prompt)
-
-    // Update your UI with the response
-    updateUI(response.text)
-}
-
-fun updateUI(response: String) {
-    // This is where you update your UI with the response
-    // For example, if you have a TextView to display the AI's response:
-    yourTextView.text = response
+    return response.text ?: "Sorry, I couldn't understand that."
 }
