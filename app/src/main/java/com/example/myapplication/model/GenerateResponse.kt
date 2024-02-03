@@ -11,7 +11,6 @@ class GeminiClient(private val modelName: String, private val apiKey: String) {
             val response = generativeModel.generateContent(prompt)
             response.text ?: "Sorry, I couldn't understand that."
         } catch (e: Exception) {
-            // Log the exception
             "Error occurred: ${e.message}"
         }
     }
