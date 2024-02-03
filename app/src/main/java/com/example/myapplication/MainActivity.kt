@@ -2,10 +2,10 @@
 package com.example.myapplication
 
 import ChatViewModel
+import GeminiClient
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.myapplication.model.GeminiClient
 import com.example.myapplication.presentation.ChatScreen
 
 class MainActivity : ComponentActivity() {
