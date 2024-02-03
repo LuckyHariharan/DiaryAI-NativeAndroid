@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val geminiClient = GeminiClient("gemini_pro", "AIzaSyDp0Oji17ZQ7dds8ODNFO1DaQ_oJ0ooEoc")
+        val geminiClient = GeminiClient("gemini-pro", "AIzaSyDp0Oji17ZQ7dds8ODNFO1DaQ_oJ0ooEoc")
         val viewModel = ChatViewModel(geminiClient)
 
 

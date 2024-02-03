@@ -27,8 +27,8 @@ data class Message(val text: String, val timestamp: String, val isUser: Boolean)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(viewModel: ChatViewModel) {
+    val messages by viewModel.messages.collectAsState()
     var messageText by remember { mutableStateOf("") }
-    val messages = viewModel.getMessages().asReversed()
     var showColorDialog by remember { mutableStateOf(false) }
     var backgroundColor by remember { mutableStateOf(Color(0xFF1C1C1C)) } // Default color
 

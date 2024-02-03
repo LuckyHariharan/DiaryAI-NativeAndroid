@@ -2,26 +2,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.GeminiClient // Import GeminiClient
 import com.example.myapplication.presentation.Message
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-
 class ChatViewModel(private val geminiClient: GeminiClient) : ViewModel() {
-    private val messages = mutableListOf<Message>()
-
-    fun getMessages(): List<Message> {
-        return messages
-    }
+    private val _messages = MutableStateFlow<List<Message>>(emptyList())
+    val messages = _messages.asStateFlow()
 
     fun sendMessage(messageText: String) {
         if (messageText.isNotEmpty()) {
-            // Add user message to the list
-            messages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
+            val updatedMessages = _messages.value.toMutableList()
+            updatedMessages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
+            _messages.value = updatedMessages
 
-            // Fetch AI response asynchronously
             viewModelScope.launch {
                 val aiResponse = geminiClient.generateResponse(messageText)
-                messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+                val newMessages = _messages.value.toMutableList()
+                newMessages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+                _messages.value = newMessages
             }
         }
     }
