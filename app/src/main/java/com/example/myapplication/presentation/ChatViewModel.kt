@@ -1,22 +1,29 @@
+package com.example.myapplication.presentation
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.presentation.Message
+import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatViewModel(private val geminiClient: GeminiClient) : ViewModel() {
+class ChatViewModel(private val generativeModel: GenerativeModel) : ViewModel() {
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages = _messages.asStateFlow()
 
     fun sendMessage(messageText: String) {
         if (messageText.isNotEmpty()) {
             addMessage(messageText, true)
+
             viewModelScope.launch {
-                val aiResponse = geminiClient.sendMessage(messageText)
-                addMessage(aiResponse, false)
+                try {
+                    val response = generativeModel.generateContent(messageText)
+                    addMessage(response.text ?: "No response", false)
+                } catch (e: Exception) {
+                    addMessage("Error occurred: ${e.message}", false)
+                }
             }
         }
     }
