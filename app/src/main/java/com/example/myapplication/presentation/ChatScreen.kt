@@ -179,7 +179,7 @@ fun MessagesList(messages: List<Message>) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        items(messages.reversed()) { message ->
+        items(messages) { message ->
             // Differentiate color and layout between user and AI messages
             val (bubbleColor, timestampAlignment, textAlignment) = if (message.isUser) {
                 Triple(White, Alignment.CenterVertically, Alignment.CenterStart)
