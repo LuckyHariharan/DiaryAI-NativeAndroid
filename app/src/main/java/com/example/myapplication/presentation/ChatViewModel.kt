@@ -1,12 +1,12 @@
-package com.example.myapplication.presentation// ChatViewModel.kt
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.model.GeminiClient // Import GeminiClient
+import com.example.myapplication.presentation.Message
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(private val geminiClient: GeminiClient) : ViewModel() {
     private val messages = mutableListOf<Message>()
 
     fun getMessages(): List<Message> {
@@ -15,11 +15,14 @@ class ChatViewModel : ViewModel() {
 
     fun sendMessage(messageText: String) {
         if (messageText.isNotEmpty()) {
+            // Add user message to the list
             messages.add(Message(messageText, getCurrentTimestamp(), isUser = true))
 
-            // Simulated AI response
-            val aiResponse = "AI Response to: $messageText"
-            messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+            // Fetch AI response asynchronously
+            viewModelScope.launch {
+                val aiResponse = geminiClient.generateResponse(messageText)
+                messages.add(Message(aiResponse, getCurrentTimestamp(), isUser = false))
+            }
         }
     }
 

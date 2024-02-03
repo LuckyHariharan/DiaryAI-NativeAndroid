@@ -1,16 +1,20 @@
 // MainActivity.kt
 package com.example.myapplication
 
+import ChatViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.myapplication.model.GeminiClient
 import com.example.myapplication.presentation.ChatScreen
-import com.example.myapplication.presentation.ChatViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel = ChatViewModel()
+
+        val geminiClient = GeminiClient("gemini_pro", "AIzaSyDp0Oji17ZQ7dds8ODNFO1DaQ_oJ0ooEoc")
+        val viewModel = ChatViewModel(geminiClient)
+
 
         setContent {
             ChatScreen(viewModel = viewModel)
