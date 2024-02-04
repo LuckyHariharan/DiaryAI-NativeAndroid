@@ -18,12 +18,16 @@ class ChatViewModel(private val generativeModel: GenerativeModel) : ViewModel() 
             addMessage(messageText, true)
 
             viewModelScope.launch {
-                try {
-                    val response = generativeModel.generateContent(messageText)
-                    addMessage(response.text ?: "No response", false)
-                } catch (e: Exception) {
-                    addMessage("Error occurred: ${e.message}", false)
+                viewModelScope.launch {
+                    try {
+                        val response = generativeModel.generateContent(messageText)
+                        addMessage(response.text ?: "No response", false)
+                    } catch (e: Exception) {
+                        addMessage("Error occurred: ${e.localizedMessage}", false)
+                        e.printStackTrace() // This will print the full stack trace to the log
+                    }
                 }
+
             }
         }
     }
